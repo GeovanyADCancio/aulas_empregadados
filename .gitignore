@@ -1,5 +1,6 @@
 # Ignorar ambientes virtuais Python
 venv/
+data/
 
 # Ignorar arquivos de compilação Python
 *.pyc

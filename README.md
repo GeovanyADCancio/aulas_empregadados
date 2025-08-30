@@ -20,3 +20,10 @@ GIT
 
 9. git merge main
 
+PYTHON VIRTUAL ENV
+
+1. python -m venv venv
+
+2. pip freeze > requirements.txt
+
+3. pip install -r requirements.txt (se já existir o requirements)
