@@ -2,23 +2,21 @@
 
 GIT
 
-1) git clone git@github.com:GeovanyADCancio/aulas_empregadados.git
-ou
-1.1) git init
+1. git clone git@github.com:GeovanyADCancio/aulas_empregadados.git ou 1.1 git init
 
-2) cd .\aulas_empregadados\ 
+2. cd .\aulas_empregadados\ 
 
-3) git add .
+3. git add .
 
-4) git commit -m "Inserção de arquivo README."
+4. git commit -m "Inserção de arquivo README."
 
-5) git push origin main
+5. git push origin main
 
-6)git log
+6. git log
 
-7) git branch dev
+7. git branch dev
 
-8) git checkout dev
+8. git checkout dev
 
-9) git merge main
+9. git merge main
 
