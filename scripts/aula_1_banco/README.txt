@@ -1,20 +1,47 @@
-Pacotes/bibliotecas necessárias para executar os códigos desta aula:
+# 📘 Documentação da Aula
 
-- pip install pandas pyarrow sqlalchemy psycopg2-binary python-dotenv
+## 📦 Pacotes necessários
 
+Instale as bibliotecas para executar os códigos desta aula:
 
-Crie o arquivo de variáveis de ambiente .env e aplique no .gitignore
+    pip install pandas pyarrow sqlalchemy psycopg2-binary python-dotenv
 
-Criação de dataset
+---
+
+## ⚙️ Configuração do ambiente
+
+- Crie o arquivo `.env` na raiz do projeto.  
+- Adicione o `.env` no arquivo `.gitignore` para evitar versionar informações sensíveis.  
+
+---
+
+## 🗄️ Criação do banco de dados
+
+Acesse o PostgreSQL:
 
     sudo -u postgres psql
 
+Crie o banco de dados:
+
     CREATE DATABASE medical_analysis;
 
-Execução de script:
+---
 
-    C:\Users\geova\OneDrive\Documentos\empregadados\codigo\aulas_empregadados\scripts\aula_1_banco> 
+## ▶️ Execução do script
 
-    executar na pasta do script dentro do terminal. Se executar a partir de outro diretório não vai funcionar as variáveis de ambiente.
-    a não ser que insira no código o caminho absoluto do arquivo
+Navegue até a pasta do script no terminal:
 
+    C:\Users\geova\OneDrive\Documentos\empregadados\codigo\aulas_empregadados\scripts\aula_1_banco>
+
+⚠️ **Atenção:**  
+- O script deve ser executado **dentro da pasta do script**.  
+- Se rodar em outro diretório, as variáveis de ambiente não serão carregadas.  
+- Alternativamente, insira no código o **caminho absoluto** do arquivo `.env`.
+
+---
+
+## 🔄 Desfazer commits no Git
+
+Para desfazer o último commit (ou mais de um, ajustando o número):
+
+    git reset --hard HEAD~1
