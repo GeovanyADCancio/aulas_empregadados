@@ -12,7 +12,7 @@ Thumbs.db
 
 # Ignorar ambientes virtuais Python
 venv/
-data/
+aula_1_banco_de_dados/data/
 
 # Ignorar variáveis de ambiente, incluindo credenciais
 .env
