@@ -36,6 +36,8 @@ CREATE INDEX idx_encounters_class ON _encounters_augmentation (encounterclass);
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE INDEX idx_encounters_description_gin ON _encounters_augmentation USING GIN (description gin_trgm_ops);
 
+-- Criar na aula um índice para a TABELA RESULTANTE DO JOIN
+
 --------------------> CONSULTAS INICIAIS COM OTIMIZAÇÃO <--------------------
 -- MESMAS CONSULTAS INICIAIS COM OTIMIZAÇÃO
 
