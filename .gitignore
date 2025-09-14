@@ -1,7 +1,3 @@
-# Ignorar ambientes virtuais Python
-venv/
-data/
-
 # Ignorar arquivos de compilação Python
 *.pyc
 *.pyo
@@ -13,3 +9,10 @@ __pycache__/
 # Ignorar arquivos do sistema
 .DS_Store
 Thumbs.db
+
+# Ignorar ambientes virtuais Python
+venv/
+aula_1_banco_de_dados/data/
+
+# Ignorar variáveis de ambiente, incluindo credenciais
+.env
