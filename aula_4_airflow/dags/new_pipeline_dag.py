@@ -20,7 +20,7 @@ DEFAULT_ARGS = {
 @dag(
     dag_id=os.path.basename(__file__).replace('.py', ''),  # Nome da DAG = nome do arquivo
     description="DAG para estruturar tabelas médicas em arquitetura medallion no PostgreSQL",
-    schedule="0 10 * * *",                        # Sem agendamento automático (execução manual)
+    schedule="0 10 * * *",                # Sem agendamento automático (execução manual)
     default_args=DEFAULT_ARGS,            # Argumentos padrão definidos acima
     dagrun_timeout=timedelta(hours=1),    # Tempo máximo de execução de uma DAG Run
     max_active_runs=1,                    # Apenas uma execução ativa por vez

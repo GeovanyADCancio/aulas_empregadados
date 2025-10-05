@@ -67,3 +67,16 @@ Após a criação dos scripts copiar na pasta de dags e tasks:
 
 - `cp /mnt/c/Users/geova/OneDrive/Documentos/empregadados/codigo/aulas_empregadados/aula_4_airflow/dags/new_pipeline_dag.py ~/airflow/dags/`
 - `cp /mnt/c/Users/geova/OneDrive/Documentos/empregadados/codigo/aulas_empregadados/aula_4_airflow/custom_packages/plu_medical.py ~/airflow/plugins/custom_packages/`
+
+
+# 🚀 Aula do sobre o Airflow (arquitetura e novos comandos)
+
+1. Executar a instalação do pacode do postgres.
+   1. pip install 'apache-airflow-providers-postgres'
+2. inserir no arquivo de configuração o comando:
+   1. [core] -> encontrar essa linha e abaixo inserir: template_searchpath = /home/geovany-cancio/airflow/plugins/custom_packages
+3. Criar uma nova conexão na interface web para o postgresql.
+4. Baixar o pacote para usar os sensores:
+   1. pip install 'apache-airflow-providers-common-io'
+   2. pip install apache-airflow-providers-filesystem
+
