@@ -15,7 +15,7 @@ DEFAULT_ARGS = {
 
 @dag(
     dag_id=os.path.basename(__file__).replace('.py', ''),
-    description="DAG para estruturar e popular OLTP no PostgreSQL, seguida por arquitetura medallion.",
+    description="DAG para estruturar e popular um ambiente OLTP no PostgreSQL, seguida por arquitetura medallion.",
     schedule="0 7 * * 1", # (minuto, hora, dia do mês, mês, dia da semana) -> Segunda-feira (O Airflow, como o Cron, usa 0 para Domingo e 1 para Segunda)
     default_args=DEFAULT_ARGS,
     dagrun_timeout=timedelta(hours=1),

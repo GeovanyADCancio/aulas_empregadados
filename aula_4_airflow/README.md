@@ -79,4 +79,3 @@ Após a criação dos scripts copiar na pasta de dags e tasks:
 4. Baixar o pacote para usar os sensores:
    1. pip install 'apache-airflow-providers-common-io'
    2. pip install apache-airflow-providers-filesystem
-
