@@ -3,7 +3,6 @@ from airflow.providers.standard.operators.empty import EmptyOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from datetime import datetime, timedelta
 import os
-import sys
 
 # Argumentos padrão aplicados a todas as tasks da DAG
 DEFAULT_ARGS = {

@@ -2,7 +2,6 @@ from airflow.decorators import dag
 from airflow.providers.standard.operators.empty import EmptyOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from airflow.sensors.filesystem import FileSensor
-from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import os
 
@@ -40,7 +39,7 @@ def sql_file_monitor_pipeline():
         filepath=os.path.join(MONITORED_DIR, SQL_FILE_TO_MONITOR), 
         fs_conn_id='fs_default', # Usa a conexão padrão do FileSystem
         poke_interval=30,        # Verifica a cada 30 segundos (polling)
-        timeout=60 * 60,         # Tempo máximo de espera: 1 hora
+        timeout=60 * 55,         # Tempo máximo de espera: 1 hora
         mode='poke',
     )
 
