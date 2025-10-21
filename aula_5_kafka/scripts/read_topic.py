@@ -3,7 +3,7 @@ from kafka import KafkaConsumer
 from datetime import datetime
 
 # --- Configurações ---
-KAFKA_BROKER = 'localhost:9092'  # Endereço do seu broker Kafka
+KAFKA_BROKER = 'localhost:9092'  # Endereço do broker Kafka
 KAFKA_TOPIC = 'aeroporto.public.eventos_voo'
 CONSUMER_GROUP = 'monitor-python-grupo' # ID do grupo de consumidores
 

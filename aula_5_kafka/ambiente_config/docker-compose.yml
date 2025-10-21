@@ -49,13 +49,13 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: postgres
+    container_name: postgres_new
     restart: always
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres1
+      POSTGRES_PASSWORD: postgres1
       POSTGRES_DB: mydb
     command:
       - "postgres"
@@ -68,7 +68,8 @@ services:
       - "-c"
       - "shared_preload_libraries=pgoutput"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata_new:/var/lib/postgresql/data
+
 
 volumes:
-  pgdata:
+  pgdata_new:

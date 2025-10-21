@@ -39,6 +39,6 @@ CREATE TABLE eventos_voo (
     id SERIAL PRIMARY KEY,
     voo_id INT REFERENCES voos(id),
     timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
-    evento TEXT NOT NULL,  -- decolou, pousou, em solo, taxiando, etc.
+    evento TEXT NOT NULL,
     observacoes TEXT
 );

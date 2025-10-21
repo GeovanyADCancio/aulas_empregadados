@@ -70,12 +70,11 @@ curl -X POST http://localhost:8083/connectors \
       "publication.name": "pub_eventosvoo",
       "table.include.list": "public.eventos_voo",
       "tombstones.on.delete": "false",
-      "database.history.kafka.bootstrap.servers": "kafka:9092",
+      "database.history.kafka.bootstrap.servers": "kafka:29092",
       "database.history.kafka.topic": "schema-changes.eventosvoo"
     }
   }'
 ```
-
 Verifique se o conector foi criado:
 
 ```bash
@@ -101,3 +100,26 @@ docker exec -it kafka kafka-console-consumer \
 Baixar a biblioteca:
 
 pip install confluent-kafka kafka-python
+
+## 7. Exemplo de consumidores e produtores de logs
+
+Verificar o estado do tópico criado:
+
+```bash
+docker exec -it kafka kafka-topics --bootstrap-server localhost:9092 --describe --topic logs.aplicacoes
+```
+
+Deletar tópico:
+
+```bash
+docker exec -it kafka kafka-topics --bootstrap-server localhost:9092 --delete --topic logs.aplicacoes
+```
+
+Criar tópicos com várias partições:
+
+```bash
+docker exec -it kafka kafka-topics --bootstrap-server localhost:9092 --create \
+ --topic logs.aplicacoes \
+ --partitions 2 \
+ --replication-factor 1
+ ```
