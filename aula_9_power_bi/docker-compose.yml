@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: postgres
+          
+    environment:
+      - POSTGRES_USER=geovany
+      - POSTGRES_PASSWORD=teste-geovany
+      - POSTGRES_DB=my_db
+    ports:
+      - "5432:5432"
+
+    # 3. MANTEMOS NOSSO VOLUME (ESSENCIAL!)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+    networks:
+      - network_connection
+    restart: always
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  network_connection:
+    driver: bridge
