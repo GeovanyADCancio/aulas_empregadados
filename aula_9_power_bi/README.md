@@ -19,3 +19,17 @@ Links:
 4. https://data.gov/
 5. https://github.com/search?q=dataset
 6. https://data.nasa.gov/
+
+
+OTIMIZAÇÃO DE PERFORMANCE
+
+https://powerbi.microsoft.com/pt-br/blog/best-practice-rules-to-improve-your-models-performance/
+
+MEASURE KILLER: https://www.brunner.bi/measurekiller
+TABULAR EDITOR: https://www.brunner.bi/measurekiller
+PERFORMANCE ANALYZER: está no próprio Power Bi.
+    - < 200ms é Excelente
+    - 200ms a 500ms é Bom/Aceitável
+    - 500ms a 1000ms Atenção/Pode melhorar
+    - > 1000ms Ruim
+  
