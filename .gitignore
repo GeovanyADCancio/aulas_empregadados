@@ -18,3 +18,5 @@ aula_1_banco_de_dados/data/
 .env
 
 data/
+
+*.pbix

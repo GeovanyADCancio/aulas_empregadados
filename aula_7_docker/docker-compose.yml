@@ -8,7 +8,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "2181:2181"
+      - "2181:2181" # PORTA_HOST:PORTA_CONTAINER
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -16,7 +16,7 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"
+      - "9092:9092" # - "9092:9092/udp"
       - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1

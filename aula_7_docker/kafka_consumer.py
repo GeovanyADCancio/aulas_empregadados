@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 import json
 
-KAFKA_BROKER = 'kafka:29092'
+KAFKA_BROKER = 'kafka:29092',
 TOPIC = 'logs.aplicacoes'
 GROUP_ID = 'monitoramento-tempo-real'
 
