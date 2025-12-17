@@ -5,9 +5,9 @@ from sqlalchemy import create_engine
 
 # --- CONFIGURAÇÕES ---
 MINIO_ENDPOINT = "minio:9000"
-MINIO_ACCESS_KEY = "minioadmin"
+MINIO_ACCESS_KEY = "minioadmin" # Desafio: inserir as credenciais como variáveis no airflow
 MINIO_SECRET_KEY = "minioadmin"
-POSTGRES_CONN = 'postgresql+psycopg2://airflow:airflow@postgres:5432/airflow'
+POSTGRES_CONN = 'postgresql+psycopg2://airflow:airflow@postgres:5432/airflow' # Desafio: inserir as credenciais como variáveis no airflow
 
 MINIO_OPTS = {
     'client_kwargs': {'endpoint_url': f'http://{MINIO_ENDPOINT}'},

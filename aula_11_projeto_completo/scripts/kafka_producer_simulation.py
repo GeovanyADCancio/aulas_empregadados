@@ -54,7 +54,7 @@ def run_producer():
             
             # Simula variabilidade de tráfego (picos e calmaria)
             # As vezes rápido (0.1s), as vezes lento (1.5s)
-            wait_time = random.choice([0.1, 0.1, 0.5, 1.5]) 
+            wait_time = random.choice([0.1, 0.5, 1.5]) 
             time.sleep(wait_time)
             
             # flush a cada envio para ver o print acontecer em tempo real na aula

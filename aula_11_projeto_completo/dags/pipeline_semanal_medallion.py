@@ -20,7 +20,7 @@ with DAG(
     description='Pipeline Ponta a Ponta: CSV -> MinIO -> Postgres',
     # Schedule: Roda toda segunda-feira à meia-noite (Notação Cron)
     # Ou use '@weekly' que roda domingo meia-noite
-    schedule_interval='0 0 * * 1', 
+    schedule_interval='0 0 * * 1',
     catchup=False,
     tags=['projeto_final', 'medallion']
 ) as dag:
