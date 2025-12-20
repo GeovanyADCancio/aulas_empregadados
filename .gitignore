@@ -5,6 +5,7 @@ __pycache__/
 
 # Ignorar arquivos de log
 *.log
+*/logs
 
 # Ignorar arquivos do sistema
 .DS_Store
