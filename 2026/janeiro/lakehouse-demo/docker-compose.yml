@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio-data:/data
+
+  dremio:
+    image: dremio/dremio-oss:latest
+    container_name: dremio
+    ports:
+      - "9047:9047"     # UI
+      - "31010:31010"   # JDBC
+    volumes:
+      - dremio-data:/opt/dremio/data
+    depends_on:
+      - minio
+
+  iceberg-python:
+    build:
+      context: ./python
+    container_name: iceberg-python
+    depends_on:
+      - minio
+    restart: on-failure:5
+    environment:
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      AWS_REGION: us-east-1
+      AWS_ENDPOINT_URL: http://minio:9000
+    command: ["python", "pipeline.py"]
+
+volumes:
+  minio-data:
+  dremio-data:
