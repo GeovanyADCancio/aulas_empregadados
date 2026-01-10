@@ -1,0 +1,13 @@
+version: '3'
+services:
+  spark-lab:
+    image: jupyter/pyspark-notebook:latest
+    container_name: aula_spark_demo
+    ports:
+      - "8888:8888" # Jupyter Lab
+      - "4040:4040" # Spark UI (IMPORTANTE PARA A AULA)
+    volumes:
+      - ./work:/home/jovyan/work
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
