@@ -1,0 +1,4 @@
+FROM apache/airflow:2.7.1
+
+# Instala o pacote oficial do Airflow para operar o Docker
+RUN pip install --no-cache-dir apache-airflow-providers-docker

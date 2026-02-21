@@ -15,11 +15,27 @@ Thumbs.db
 venv/
 .venv
 
+# Ignorar pastas de dados locais
 aula_1_banco_de_dados/data/
+data/
 
 # Ignorar variáveis de ambiente, incluindo credenciais
 .env
 
-data/
-
+# Ignorar arquivos do Power BI
 *.pbix
+
+# ---------------------------------------------------
+# Ignorar arquivos gerados pelo dbt
+# ---------------------------------------------------
+target/
+dbt_packages/
+dbt_modules/
+analyses/
+seeds/
+macros/
+logs/
+snapshots/
+tests/
+.user.yml
+dbt_project.yml

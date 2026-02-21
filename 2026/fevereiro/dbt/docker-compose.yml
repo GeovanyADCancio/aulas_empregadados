@@ -1,0 +1,96 @@
+version: '3.8'
+
+x-airflow-common:
+  &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile.airflow
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+  user: "${AIRFLOW_UID:-50000}:0"
+  networks:
+    - dbt_net
+  depends_on:
+    &airflow-common-depends-on
+    postgres_airflow:
+      condition: service_healthy
+
+services:
+  # 1. O Data Warehouse (Alvo do dbt)
+  warehouse:
+    image: postgres:15
+    container_name: dw_transporte
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: senha_secreta
+      POSTGRES_DB: transport_dw
+    ports:
+      - "5432:5432"
+    networks:
+      - dbt_net
+
+  # 2. Banco de Metadados do Airflow
+  postgres_airflow:
+    image: postgres:13
+    container_name: metadata_airflow
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    networks:
+      - dbt_net
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 10s
+      retries: 5
+    restart: always
+    depends_on:
+      postgres_airflow:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    user: "root" # Possibilita a comunicação com o docker.sock
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - /var/run/docker.sock:/var/run/docker.sock # Canal de comunicação com o Docker (controla o docker)
+    restart: always
+    depends_on:
+      postgres_airflow:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-init:
+    <<: *airflow-common
+    # Comando explícito e blindado para iniciar o banco e criar o usuário admin
+    command: >
+      bash -c "
+      airflow db migrate &&
+      airflow users create --role Admin --username admin --password admin --firstname Admin --lastname Instrutor --email admin@aula.com
+      "
+    user: "0:0"
+
+networks:
+  dbt_net:
+    name: dbt_net # <-- Força o Docker a não inventar prefixos
