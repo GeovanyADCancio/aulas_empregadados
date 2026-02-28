@@ -34,7 +34,7 @@ with DAG(
     'dbt_transport_pipeline_ephemeral',
     default_args=default_args,
     description='Pipeline dbt com containers efêmeros',
-    schedule_interval=None,
+    schedule_interval=None, 
     start_date=datetime(2026, 2, 21),
     catchup=False,
     tags=['dbt', 'transporte', 'aula'],
@@ -68,5 +68,5 @@ with DAG(
         **docker_default_kwargs
     )
 
-    # dbt_seed >> dbt_run_staging >> dbt_run_marts >> dbt_test
-    dbt_seed >> dbt_run_staging >> dbt_run_marts
+    dbt_seed >> dbt_run_staging >> dbt_run_marts >> dbt_test
+    # dbt_seed >> dbt_run_staging >> dbt_run_marts

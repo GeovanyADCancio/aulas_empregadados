@@ -26,7 +26,7 @@ models:
         tests:
           - unique
           - not_null
-      - name: rating_avg
+      - name: rating
         tests:
           - not_null
 
@@ -64,4 +64,4 @@ models:
       - name: payment_method
         tests:
           - accepted_values:
-              values: ['credit_card', 'cash', 'app_wallet']
+              values: ['app_wallet']
