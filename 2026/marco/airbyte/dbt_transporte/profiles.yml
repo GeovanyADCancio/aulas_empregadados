@@ -1,0 +1,14 @@
+transporte_dw:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      # A MÁGICA: O dbt acha o banco pelo nome do container na rede dbt_net!
+      host: dw_transporte 
+      user: admin
+      password: senha_secreta
+      port: 5432
+      dbname: transport_dw
+      schema: raw # O schema onde o dbt vai criar as tabelas finais
+      threads: 4
+      keepalives_idle: 0

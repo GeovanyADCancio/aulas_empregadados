@@ -1,0 +1,160 @@
+version: '3.8'
+
+# ===============================
+# CONFIGURAÇÕES BASE DO AIRFLOW
+# (Reaproveitadas nos serviços abaixo)
+# ===============================
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile.airflow
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__WEBSERVER__SECRET_KEY: 'uma_chave_secreta_super_segura_123'
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./dbt_transporte:/opt/airflow/dbt_transporte
+  user: "${AIRFLOW_UID:-50000}:0"
+  networks:
+    - dbt_net
+  depends_on:
+    postgres_airflow:
+      condition: service_healthy
+
+services:
+
+  # ===============================
+  # DATA WAREHOUSE (Destino - Camadas Bronze/Silver/Gold)
+  # ===============================
+  warehouse:
+    image: postgres:15
+    container_name: dw_transporte
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: senha_secreta
+      POSTGRES_DB: transport_dw
+    ports:
+      # Regra: "Porta_do_seu_PC : Porta_Interna_do_Container"
+      # O Airbyte usa a porta 5432 do seu PC para conseguir gravar dados aqui
+      - "5432:5432"
+    networks:
+      - dbt_net
+
+  # ===============================
+  # AIRFLOW METADATA
+  # ===============================
+  postgres_airflow:
+    image: postgres:13
+    container_name: metadata_airflow
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    networks:
+      - dbt_net
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    restart: always
+    extra_hosts:
+      # ESSENCIAL: Cria a ponte (host.docker.internal) para o Airflow conseguir 
+      # se comunicar com o Airbyte que está rodando "do lado de fora" deste arquivo
+      - "host.docker.internal:host-gateway" # Seta para o computador que esta rodando a aplicação
+    depends_on:
+      postgres_airflow:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    user: "root"
+    extra_hosts:
+      # O Scheduler também precisa dessa ponte para disparar os jobs no Airbyte
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./dbt_transporte:/opt/airflow/dbt_transporte
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    depends_on:
+      postgres_airflow:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-init:
+    <<: *airflow-common
+    command: >
+      bash -c "
+      airflow db migrate &&
+      airflow users create --role Admin --username admin --password admin --firstname Admin --lastname Instrutor --email admin@aula.com
+      "
+    user: "0:0"
+
+  # ===============================
+  # SOURCE DATABASE
+  # ===============================
+  postgres_source:
+    image: postgres:15
+    container_name: source_transporte
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: senha_secreta
+      POSTGRES_DB: app_db
+    ports:
+      # Usamos a 5433 no PC para não dar conflito com a 5432 do Data Warehouse
+      - "5433:5432"
+    networks:
+      - dbt_net
+
+  # ===============================
+  # MINIO (DATA LAKE)
+  # ===============================
+  minio:
+    image: minio/minio
+    container_name: minio_storage
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    ports:
+      - "9000:9000" # Porta da API (usada pelo Airbyte e script Python)
+      - "9001:9001" # Porta da Interface Visual (Acesso pelo navegador)
+    networks:
+      - dbt_net
+
+  minio_setup:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      mc alias set myminio http://minio:9000 admin password123;
+      mc mb myminio/datalake;
+      exit 0;
+      "
+    networks:
+      - dbt_net
+
+# ===============================
+# NETWORKS
+# ===============================
+networks:
+  dbt_net:
+    name: dbt_net
+
+volumes: {}

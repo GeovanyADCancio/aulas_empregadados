@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: airbyte_raw
+    schema: raw
+    tables:
+      - name: raw_drivers
+      - name: raw_passengers
+      - name: raw_trips

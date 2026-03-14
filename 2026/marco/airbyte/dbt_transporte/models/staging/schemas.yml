@@ -1,0 +1,67 @@
+# Arquivo: models/staging/schema.yml
+version: 2
+
+models:
+  # ------------------------------------
+  # Testes para a dimensão de Motoristas
+  # ------------------------------------
+  - name: stg_drivers
+    columns:
+      - name: driver_id
+        tests:
+          - unique
+          - not_null
+      - name: category
+        tests:
+          # Ajustado para as categorias reais do seu script Python
+          - accepted_values:
+              values: ['X', 'Black', 'Comfort']
+
+  # ------------------------------------
+  # Testes para a dimensão de Passageiros
+  # ------------------------------------
+  - name: stg_passengers
+    columns:
+      - name: passenger_id
+        tests:
+          - unique
+          - not_null
+      - name: rating
+        tests:
+          - not_null
+
+  # ------------------------------------
+  # Testes para os Fatos (Viagens)
+  # ------------------------------------
+  - name: stg_trips
+    columns:
+      - name: trip_id
+        tests:
+          - unique
+          - not_null
+      
+      - name: driver_id
+        tests:
+          - not_null
+          # Garante que não existe viagem com um motorista fantasma
+          - relationships:
+              to: ref('stg_drivers')
+              field: driver_id
+              
+      - name: passenger_id
+        tests:
+          - not_null
+          # Garante que não existe viagem com um passageiro fantasma
+          - relationships:
+              to: ref('stg_passengers')
+              field: passenger_id
+              
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['completed', 'cancelled_by_driver', 'cancelled_by_passenger']
+
+      - name: payment_method
+        tests:
+          - accepted_values:
+              values: ['app_wallet']

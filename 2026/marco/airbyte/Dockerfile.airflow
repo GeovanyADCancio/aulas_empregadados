@@ -1,0 +1,11 @@
+FROM apache/airflow:2.7.1
+
+# Define a URL com as regras de compatibilidade exatas para o Airflow 2.7.1 e Python 3.8
+ARG CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-2.7.1/constraints-3.8.txt"
+
+# Instala os pacotes forçando o respeito às regras (constraint)
+RUN pip install --no-cache-dir \
+    "apache-airflow-providers-docker" \
+    "apache-airflow-providers-airbyte" \
+    "apache-airflow-providers-http" \
+    --constraint "${CONSTRAINT_URL}"
